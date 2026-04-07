@@ -2,7 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-//const { default: mongoose } = require('mongoose');
+const Product = require('./models/Product');
+const productRoutes = require('./routes/productRoutes');
 
 const app = express();
 
@@ -20,19 +21,17 @@ mongoose.connect(MONGODB_URI)
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
+app.use('/api/products', productRoutes);
 
-app.get('/api/test', (req, res) => {
-    res.status(200).json({
-        message: 'A rota de teste da API está funcionando perfeitamente',
-        timestamp: new Date().toISOString()
-    });
-});
+// app.get('/api/test', (req, res) => {
+//     res.status(200).json({
+//         message: 'A rota de teste da API está funcionando perfeitamente',
+//         timestamp: new Date().toISOString()
+//     });
+// });
 
 app.get('/', (req, res) => {
-    res.status(200).json({
-        message: 'Bem-vindo à sua API Express!',
-        info: 'Acesse /api/test para ver a rota de teste.'
-    });
+    res.json({ message: 'API Bom Sabor Online!' });
 });
 
 app.use((req, res, next) => {
