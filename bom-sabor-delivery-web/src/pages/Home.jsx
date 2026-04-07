@@ -76,7 +76,7 @@ export default function Home() {
                       addToCart(product);
                       setIsCartOpen(true); // Abre o carrinho automaticamente ao adicionar
                     }}
-                    className="bg-pizza-red hover:bg-red-600 text-white p-4 rounded-2xl shadow-lg shadow-pizza-red/30 transition-all active:scale-95"
+                    className="bg-pizza-red hover:bg-red-600 text-black p-4 rounded-2xl shadow-lg shadow-pizza-red/30 transition-all active:scale-95"
                   >
                     <Plus size={24} />
                   </button>
@@ -90,7 +90,7 @@ export default function Home() {
       {/* Botão Flutuante do Carrinho (Fixo) */}
       <button 
         onClick={() => setIsCartOpen(true)}
-        className="fixed bottom-8 right-8 z-40 bg-dark-charcoal text-white p-5 rounded-full shadow-2xl hover:bg-pizza-red transition-colors duration-300 group"
+        className="fixed bottom-8 right-8 z-40 bg-dark-charcoal text-black p-5 rounded-full shadow-2xl hover:bg-pizza-red transition-colors duration-300 group"
       >
         <ShoppingCart size={32} />
         {totalItems > 0 && (

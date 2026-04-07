@@ -37,7 +37,7 @@ export default function CheckoutPage() {
       `*Endereço:* ${formData.endereco}%0A` +
       `*Referência:* ${formData.referencia}%0A` +
       `*Pagamento:* ${formData.pagamento}%0A%0A` +
-      `*ITEM:%0A${mensagemItens}%0A%0A` +
+      `*ITEM:*%0A${mensagemItens}%0A%0A` +
       `*TOTAL: R$ ${cartTotal.toFixed(2)}*`;
 
     const numeroWhatsApp = import.meta.env.VITE_WHATSAPP_NUMBER;
