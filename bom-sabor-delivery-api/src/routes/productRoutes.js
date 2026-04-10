@@ -23,4 +23,25 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// Rota para ADICIONAR um novo produto
+router.post('/', async (req, res) => {
+    try {
+        const newProduct = new Product(req.body);
+        const savedProduct = await newProduct.save();
+        res.status(201).json(savedProduct);
+    } catch (err) {
+        res.status(400).json({ message: 'Erro ao adicionar produto', error: err.message });
+    }
+});
+
+// Rota para REMOVER um produto
+router.delete('/:id', async (req, res) => {
+    try {
+        await Product.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: 'Produto removido com sucesso!' });
+    } catch (err) {
+        res.status(500).json({ message: 'Erro ao remover produto', error: err.message });
+    }
+});
+
 module.exports = router;
