@@ -1,13 +1,18 @@
-import { useEffect, useState } from 'react';
-import api from '../services/api';
-import { useCart } from '../context/CartContext';
-import CartDrawer from '../components/CartDrawer';
-import { Pizza, Ham, Beer, Loader2, ShoppingCart, Plus } from 'lucide-react';
+import { useEffect, useState } from "react";
+import api from "../services/api";
+import { useCart } from "../context/CartContext";
+import CartDrawer from "../components/CartDrawer";
+import { Pizza, Ham, Beer, Loader2, ShoppingCart, Plus } from "lucide-react";
+import PizzaModal from "../components/PizzaModal";
 
 export default function Home() {
+  
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const pizzaFlavors = products.filter((p) => p.category === "pizza");
   
   const { addToCart, cart } = useCart();
 
@@ -15,22 +20,24 @@ export default function Home() {
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   useEffect(() => {
-    api.get('/products')
-      .then(response => {
+    api
+      .get("/products")
+      .then((response) => {
         setProducts(response.data);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Erro ao buscar produtos:", err);
         setLoading(false);
       });
   }, []);
 
-  if (loading) return (
-    <div className="flex h-screen items-center justify-center bg-light-gray-bg">
-      <Loader2 className="animate-spin text-pizza-red" size={48} />
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="flex h-screen items-center justify-center bg-light-gray-bg">
+        <Loader2 className="animate-spin text-pizza-red" size={48} />
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-light-gray-bg pb-20">
@@ -39,19 +46,53 @@ export default function Home() {
         <h1 className="text-4xl font-black text-dark-charcoal italic">
           BOM SABOR <span className="text-pizza-red">DELIVERY</span>
         </h1>
-        <p className="text-gray-500 mt-2 font-medium">As melhores pizzas e hambúrgueres de Alcantil</p>
+        <p className="text-gray-500 mt-2 font-medium">
+          As melhores pizzas e hambúrgueres de Alcantil
+        </p>
       </header>
 
       {/* Grid de Produtos */}
       <main className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {products.map(product => {
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="w-full bg-pizza-red p-6 rounded-2xl text-white mb-8 flex items-center justify-between hover:scale-[1.02] transition-transform shadow-xl"
+        >
+          <div className="text-left">
+            <h3 className="text-xl font-black italic">
+              QUERO UMA PIZZA MEIO A MEIO! 🍕
+            </h3>
+            <p className="text-sm opacity-90 text-white">
+              Monte do seu jeito: P, M, G ou Família
+            </p>
+          </div>
+          <span className="bg-white text-pizza-red font-black px-4 py-2 rounded-lg">
+            MONTAR
+          </span>
+        </button>
+
+        <PizzaModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          flavors={pizzaFlavors}
+          onAddToCart={addToCart}
+        />
+
+        {products.map((product) => {
           // Escolha do ícone baseada na categoria
-          const Icon = product.category === 'pizza' ? Pizza : 
-                       product.category === 'hamburguer' ? Ham : Beer;
+          const Icon =
+            product.category === "pizza"
+              ? Pizza
+              : product.category === "hamburguer"
+                ? Ham
+                : Beer;
 
           return (
-            <div key={product._id} className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:scale-[1.02] transition-transform duration-300">
-              <div className="h-4 bg-pizza-red" /> {/* Detalhe no topo do card */}
+            <div
+              key={product._id}
+              className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:scale-[1.02] transition-transform duration-300"
+            >
+              <div className="h-4 bg-pizza-red" />{" "}
+              {/* Detalhe no topo do card */}
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div className="bg-orange-50 p-3 rounded-xl">
@@ -61,17 +102,25 @@ export default function Home() {
                     {product.category}
                   </span>
                 </div>
-                
-                <h3 className="text-xl font-bold text-dark-charcoal mb-2">{product.name}</h3>
-                <p className="text-gray-500 text-sm h-12 line-clamp-2 mb-6">{product.description}</p>
-                
+
+                <h3 className="text-xl font-bold text-dark-charcoal mb-2">
+                  {product.name}
+                </h3>
+                <p className="text-gray-500 text-sm h-12 line-clamp-2 mb-6">
+                  {product.description}
+                </p>
+
                 <div className="flex justify-between items-center pt-4 border-t border-gray-50">
                   <div className="flex flex-col">
-                    <span className="text-gray-400 text-xs font-bold uppercase">Preço</span>
-                    <span className="text-2xl font-black text-green-600">R$ {product.price.toFixed(2)}</span>
+                    <span className="text-gray-400 text-xs font-bold uppercase">
+                      Preço
+                    </span>
+                    <span className="text-2xl font-black text-green-600">
+                      R$ {product.price.toFixed(2)}
+                    </span>
                   </div>
-                  
-                  <button 
+
+                  <button
                     onClick={() => {
                       addToCart(product);
                       setIsCartOpen(true); // Abre o carrinho automaticamente ao adicionar
@@ -88,7 +137,7 @@ export default function Home() {
       </main>
 
       {/* Botão Flutuante do Carrinho (Fixo) */}
-      <button 
+      <button
         onClick={() => setIsCartOpen(true)}
         className="fixed bottom-8 right-8 z-40 bg-dark-charcoal text-black p-5 rounded-full shadow-2xl hover:bg-pizza-red transition-colors duration-300 group"
       >

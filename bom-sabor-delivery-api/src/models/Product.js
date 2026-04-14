@@ -14,6 +14,18 @@ const ProductSchema = new mongoose.Schema({
     type: Number, 
     required: [true, 'O preço de venda é obrigatório'] 
   },
+  prices: {
+    P: { type: Number, default: 0 },
+    M: { type: Number, default: 0 },
+    G: { type: Number, default: 0 },
+    F: { type: Number, default: 0 }
+  },
+  maxFlavors: {
+    P: { type: Number, default: 1 },
+    M: { type: Number, default: 2 },
+    G: { type: Number, default: 3 },
+    F: { type: Number, default: 4 }
+  },
   costPrice: { 
     type: Number, 
     default: 0 // Aqui entra o seu controle de lucro!
@@ -35,6 +47,10 @@ const ProductSchema = new mongoose.Schema({
   createdAt: { 
     type: Date, 
     default: Date.now 
+  },
+  isFlavor: { 
+    type: Boolean, 
+    default: true
   }
 });
 
