@@ -51,6 +51,10 @@ const ProductSchema = new mongoose.Schema({
   isFlavor: { 
     type: Boolean, 
     default: true
+  },
+  image: {
+    type: String,
+    default: ''
   }
 });
 

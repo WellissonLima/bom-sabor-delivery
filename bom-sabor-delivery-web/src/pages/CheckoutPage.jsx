@@ -25,11 +25,17 @@ export default function CheckoutPage() {
     }
 
     const mensagemItens = cart
-      .map(
-        (item) =>
-          `*${item.quantity}x ${item.name}* (R$ ${(item.price * item.quantity).toFixed(2)})`,
-      )
-      .join("%0A");
+      .map((item) => {
+        // 1. Verificamos se o item tem sabores selecionados (Pizza Montada)
+        const sabores =
+          item.selectedFlavors && item.selectedFlavors.length > 0
+            ? `%0A   _Sabores: ${item.selectedFlavors.join(" + ")}_`
+            : "";
+
+        // 2. Montamos a linha do item (Quantidade x Nome + Sabores se houver)
+        return `*${item.quantity}x ${item.name}*${sabores}%0A   (R$ ${(item.price * item.quantity).toFixed(2)})`;
+      })
+      .join("%0A%0A"); // Duas quebras de linha entre itens para ficar mais legível
 
     const textoMensagem =
       `*NOVO PEDIDO - BOM SABOR*%0A%0A` +

@@ -11,6 +11,7 @@ export default function AdminPage() {
     price: "", // Para itens de preço único (bebidas/burgers)
     prices: { P: "", M: "", G: "", F: "" }, // Para os tamanhos fixos
     isFlavor: true, // Se pode ser usado em pizzas meio a meio
+    image: "", // Futuramente para upload de imagem
   });
 
   useEffect(() => {
@@ -29,7 +30,6 @@ export default function AdminPage() {
   async function handleAddProduct(e) {
     e.preventDefault();
     try {
-
       const productData = {
         ...newProduct,
         price: Number(newProduct.price) || 0,
@@ -38,7 +38,7 @@ export default function AdminPage() {
           M: Number(newProduct.prices.M) || 0,
           G: Number(newProduct.prices.G) || 0,
           F: Number(newProduct.prices.F) || 0,
-        }
+        },
       };
 
       await api.post("/products", productData);
@@ -57,7 +57,7 @@ export default function AdminPage() {
     } catch (err) {
       alert("Erro ao adicionar produto!");
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -80,6 +80,16 @@ export default function AdminPage() {
                 setNewProduct({ ...newProduct, name: e.target.value })
               }
               required
+            />
+
+            <input
+              type="text"
+              placeholder="URL da Imagem (Ex: https://link-da-foto.jpg)"
+              className="border p-3 rounded-lg outline-none focus:ring-2 focus:ring-pizza-red md:col-span-2"
+              value={newProduct.image}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, image: e.target.value })
+              }
             />
 
             <select

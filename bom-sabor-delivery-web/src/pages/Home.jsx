@@ -2,18 +2,25 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import { useCart } from "../context/CartContext";
 import CartDrawer from "../components/CartDrawer";
-import { Pizza, Ham, Beer, Loader2, ShoppingCart, Plus } from "lucide-react";
+import {
+  Pizza,
+  Ham,
+  Beer,
+  Loader2,
+  ShoppingCart,
+  Plus,
+  PlusCircle,
+} from "lucide-react";
 import PizzaModal from "../components/PizzaModal";
 
 export default function Home() {
-  
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const pizzaFlavors = products.filter((p) => p.category === "pizza");
-  
+
   const { addToCart, cart } = useCart();
 
   // Calcula total de itens para o distintivo (badge) do botão flutuante
@@ -103,24 +110,59 @@ export default function Home() {
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-dark-charcoal mb-2">
-                  {product.name}
-                </h3>
-                <p className="text-gray-500 text-sm h-12 line-clamp-2 mb-6">
-                  {product.description}
-                </p>
+                <div className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group">
+                  <div className="relative aspect-video overflow-hidden bg-gray-100">
+                    {product.image ? (
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-100 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full text-gray-300 flex items-center justify-center">
+                        <Pizza size={48} strokeWidth={1} />
+                      </div>
+                    )}
 
-                <div className="flex justify-between items-center pt-4 border-t border-gray-50">
-                  <div className="flex flex-col">
-                    <span className="text-gray-400 text-xs font-bold uppercase">
-                      Preço
-                    </span>
-                    <span className="text-2xl font-black text-green-600">
-                      R$ {product.price.toFixed(2)}
+                    <span className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-[10px] font-black px-2 py-1 rounded-lg shadow-sm uppercase tracking-widest text-dark-charcoal">
+                      R$ {product.category}
                     </span>
                   </div>
 
-                  <button
+                  <div className="p-4 flex flex-col flex-1 justify-between">
+                    <div className="flex justify-between items-center mb-1">
+                      <h3 className="text-base uppercase font-black text-dark-charcoal leading-tight">
+                        {product.name}
+                      </h3>
+                    </div>
+
+                    <p className="text-gray-400 text-xs flex-1 line-clamp-2 mb-4">
+                      {product.description ||
+                        "O sabor tradicioanal que você já conhece e ama, agora disponível para entrega!"}
+                    </p>
+
+                    <div className="flex items-center justify-between mt-auto">
+                      <span className="text-lg font-black text-green-600">
+                        {product.category === "pizza"
+                          ? "P, M, G, F"
+                          : `R$ ${product.price?.toFixed(2)}`}
+                      </span>
+
+                      {product.category !== "pizza" && (
+                        <button
+                          onClick={() => {
+                            addToCart(product);
+                            setIsCartOpen(true); // Abre o carrinho automaticamente ao adicionar
+                          }}
+                          className="bg-pizza-red text-white p-2 rounded-xl hover:bg-red-600 transition-colors shadow-lg shadow-red-100"
+                        >
+                          <PlusCircle size={20} />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* <button
                     onClick={() => {
                       addToCart(product);
                       setIsCartOpen(true); // Abre o carrinho automaticamente ao adicionar
@@ -128,7 +170,7 @@ export default function Home() {
                     className="bg-pizza-red hover:bg-red-600 text-black p-4 rounded-2xl shadow-lg shadow-pizza-red/30 transition-all active:scale-95"
                   >
                     <Plus size={24} />
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
