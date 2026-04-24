@@ -34,6 +34,20 @@ router.post('/', async (req, res) => {
     }
 });
 
+// Rota para editar produto
+router.put('/:id', async (req, res) => {
+  try {
+    const updatedProduct = await await Product.findByIdAndUpdate(
+      req.params.id, 
+      req.body, 
+      { new: true } // Retorna o objeto já atualizado
+    );
+    res.json(updatedProduct);
+  } catch (err) {
+    res.status(500).json({ message: "Erro ao atualizar produto" });
+  }
+});
+
 // Rota para REMOVER um produto
 router.delete('/:id', async (req, res) => {
     try {
