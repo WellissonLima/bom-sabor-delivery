@@ -31,6 +31,10 @@ export function CartProvider({ children }) {
     setCart((prevCart) => prevCart.filter((item) => item._id !== productId));
   };
 
+  const clearCart = () => {
+    setCart([]);
+  }
+
   // Calcular total (venda)
   const cartTotal = cart.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -39,7 +43,7 @@ export function CartProvider({ children }) {
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, cartTotal }}
+      value={{ cart, addToCart, removeFromCart, clearCart, cartTotal }}
     >
       {children}
     </CartContext.Provider>

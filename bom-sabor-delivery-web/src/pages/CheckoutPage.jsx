@@ -8,9 +8,11 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CheckoutPage() {
-  const { cart, cartTotal } = useCart();
+  const { cart, cartTotal, clearCart } = useCart();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     nome: "",
@@ -51,6 +53,11 @@ export default function CheckoutPage() {
       `https://wa.me/${numeroWhatsApp}?text=${textoMensagem}`,
       "_blank",
     );
+
+    clearCart();
+    navigate("/");
+
+    alert("Pedido enviado! O carrinho foi limpo e você será redirecionado para o cardápio.");
   };
 
   if (cart.length === 0) {
