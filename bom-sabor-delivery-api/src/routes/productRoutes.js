@@ -63,7 +63,7 @@ router.post('/login', (req, res) => {
   const { password } = req.body;
   
   // Substitua 'SUA_SENHA_AQUI' pela senha que você deseja usar
-  const ADMIN_PASSWORD = "bom-sabor-admin"; 
+  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD; 
 
   if (password === ADMIN_PASSWORD) {
     // Retornamos um token fictício (ou um JWT se preferir algo mais avançado)

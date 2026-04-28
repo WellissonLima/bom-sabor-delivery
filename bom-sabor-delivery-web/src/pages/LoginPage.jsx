@@ -13,7 +13,7 @@ export default function LoginPage() {
       const res = await api.post('/login', { password });
       // Salva o token no navegador para ele "lembrar" que você logou
       localStorage.setItem('adminToken', res.data.token);
-      navigate('/admin');
+      navigate('/admin-bom-sabor');
     } catch (err) {
       alert("Senha inválida!");
     }
