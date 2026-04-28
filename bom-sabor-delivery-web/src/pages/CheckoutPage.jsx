@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { isStoreOpen } from "../utils/businessHours";
 
 export default function CheckoutPage() {
   const { cart, cartTotal, clearCart } = useCart();
@@ -22,6 +23,9 @@ export default function CheckoutPage() {
   });
 
   const handleFinalizarPedido = () => {
+    if (!isStoreOpen()) {
+      return alert("Desculpe, nossa cozinha está fechada no momento. Por favor, volte durante nosso horário de funcionamento (Sexta a Domingo, das 18h às 22h).");
+    }
     if (!formData.nome || !formData.endereco) {
       alert("Por favor, preencha seu nome e endereço!");
     }
@@ -132,9 +136,11 @@ export default function CheckoutPage() {
 
           {/* BOTÃO FINALIZAR (No lado direito) */}
           <button
+            disabled={!isStoreOpen()}
             onClick={handleFinalizarPedido}
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-xl mt-6 flex items-center justify-center gap-2"
+            className={`w-full bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-xl mt-6 flex items-center justify-center gap-2 ${!isStoreOpen() ? "bg-pizza-red opacity-50" : "bg-gray-400 transition-colors cursor-not-allowed"}`}
           >
+            {isStoreOpen() ? "FINALIZAR PEDIDO NO WHATSAPP" : "COZINHA FECHADA"}
             <CheckCircle size={24} /> CONCLUIR PEDIDO
           </button>
         </div>

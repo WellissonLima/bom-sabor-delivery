@@ -12,6 +12,7 @@ import {
   PlusCircle,
 } from "lucide-react";
 import PizzaModal from "../components/PizzaModal";
+import { isStoreOpen } from "../utils/businessHours";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -46,6 +47,8 @@ export default function Home() {
       </div>
     );
 
+  const isOpen = isStoreOpen();
+
   return (
     <div className="min-h-screen bg-light-gray-bg pb-20">
       {/* Header Estilizado */}
@@ -57,6 +60,14 @@ export default function Home() {
           As melhores pizzas e hambúrgueres de Alcantil
         </p>
       </header>
+
+      <div
+        className={`w-full py-2 text-center font-bold text-white transition-all ${isOpen ? "bg-green-500" : "bg-red-500"}`}
+      >
+        {isOpen
+          ? "🟢 ESTAMOS ABERTOS! Faça seu pedido."
+          : "🔴 FECHADO NO MOMENTO. Confira nosso horário (SEXTA A DOMINGO, 18H ÀS 22H)"}
+      </div>
 
       {/* Grid de Produtos */}
       <main className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
