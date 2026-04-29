@@ -192,11 +192,11 @@ export default function Home() {
       {/* Botão Flutuante do Carrinho (Fixo) */}
       <button
         onClick={() => setIsCartOpen(true)}
-        className="fixed bottom-8 right-8 z-40 bg-dark-charcoal text-black p-5 rounded-full shadow-2xl hover:bg-pizza-red transition-colors duration-300 group"
+        className="fixed bottom-8 right-8 z-40 bg-dark-charcoal text-white p-5 rounded-full shadow-2xl hover:bg-pizza-red transition-colors duration-300 group"
       >
         <ShoppingCart size={32} />
         {totalItems > 0 && (
-          <span className="absolute -top-1 -right-1 bg-pizza-red group-hover:bg-dark-charcoal text-white border-2 border-white font-black rounded-full w-7 h-7 flex items-center justify-center text-xs animate-bounce">
+          <span className="absolute -top-1 -right-1 bg-pizza-red group-hover:bg-dark-charcoal text-white border-2 border-white font-white rounded-full w-7 h-7 flex items-center justify-center text-xs animate-bounce">
             {totalItems}
           </span>
         )}
