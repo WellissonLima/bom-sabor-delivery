@@ -11,9 +11,20 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isStoreOpen } from "../utils/businessHours";
 
+const DELIVERY_LOCATIONS = [
+  {id: 'centro', name: 'Centro', fee: 2.00},
+  {id: 'bairros', name: 'Bairros', fee: 3.00},
+  {id: 'zona-rural', name: 'Zona Rural', fee: 5.00},
+  {id: 'retirada-no-local', name: 'Retirada no Local (Grátis)', fee: 0.00},
+]
+
 export default function CheckoutPage() {
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const { cart, cartTotal, clearCart } = useCart();
   const navigate = useNavigate();
+
+  const deliveryFee = selectedLocation ? selectedLocation.fee : 0;
+  const totalWithDelivery = cartTotal + deliveryFee;
 
   const [formData, setFormData] = useState({
     nome: "",
@@ -50,7 +61,9 @@ export default function CheckoutPage() {
       `*Referência:* ${formData.referencia}%0A` +
       `*Pagamento:* ${formData.pagamento}%0A%0A` +
       `*ITEM:*%0A${mensagemItens}%0A%0A` +
-      `*TOTAL: R$ ${cartTotal.toFixed(2)}*`;
+      `*Local:* ${selectedLocation?.name || 'Não informado'}%0A` +
+      `*Taxa de Entrega:* R$ ${deliveryFee.toFixed(2)}%0A` +
+      `*TOTAL: R$ ${totalWithDelivery.toFixed(2)}*`;
 
     const numeroWhatsApp = import.meta.env.VITE_WHATSAPP_NUMBER;
     window.open(
@@ -132,6 +145,48 @@ export default function CheckoutPage() {
               <option>Pix</option>
               <option>Dinheiro (Levar troco)</option>
             </select>
+          </div>
+
+          <div className="bg-white p-6 rounded-2xl shadow-sm mb-6 border border-gray-100">
+              <h3 className="font-black text-lg mb-4 flex items-center gap-2">
+                <MapPin size={20} className="text-pizza-red" /> Onde Entregamos
+              </h3>
+
+              <div className="grid gap-2">
+                {DELIVERY_LOCATIONS.map((location) => (
+                  <button
+                    key={location.id}
+                    type="button"
+                    onClick={() => setSelectedLocation(location)}
+                    className={`flex justify-between items-center p-4 rounded-xl transition-all border-2 ${
+                      selectedLocation?.id === location.id
+                        ? "border-pizza-red bg-red-50 text-pizza-red"
+                        : "border-gray-100 hover:border-gray-200 text-gray-600"
+                    }`}
+                    >
+                      <span className="font-bold">{location.name}</span>
+                      <span className="text-sm">
+                        {location.fee === 0 ? "Grátis" : `R$ ${location.fee.toFixed(2)}`}
+                      </span>
+                    </button>
+                ))}
+              </div>
+          </div>
+
+          {/*RESUMO DE VALORES (No lado direito) */}
+          <div className="space-y-2 mb-6 px-2">
+            <div className="flex justify-between text-gray-600">
+              <span>Subtotal do Carrinho:</span>
+              <span>R$ {cartTotal.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-gray-500">
+              <span>Taxa de Entrega:</span>
+              <span>R$ {deliveryFee.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-xl font-black text-dark-charcoal border-t pt-2">
+              <span>Total:</span>
+              <span>R$ {totalWithDelivery.toFixed(2)}</span>
+            </div>
           </div>
 
           {/* BOTÃO FINALIZAR (No lado direito) */}

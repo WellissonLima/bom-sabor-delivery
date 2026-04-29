@@ -1,5 +1,7 @@
 export const businessHours = {
-  // 5 = Sexta-feira, 6 = Sábado, 0 = Domingo
+  // 3 = Quarta-feira, 4 = Quinta-feira, 5 = Sexta-feira, 6 = Sábado, 0 = Domingo
+  3: { open: "06:00", close: "22:00" },
+  4: { open: "18:00", close: "22:00" },
   5: { open: "18:00", close: "22:00" }, 
   6: { open: "18:00", close: "22:00" }, 
   0: { open: "18:00", close: "22:00" }, 
