@@ -8,7 +8,11 @@ const app = express();
 
 // --- 1. MIDDLEWARES (DEVEM VIR ANTES DAS ROTAS) ---
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://bom-sabor-delivery.vercel.app'],
+    origin: [
+        'http://localhost:5173', 
+        'https://bom-sabor-delivery.vercel.app',
+        /\.vercel\.app$/
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 })); // Libera o acesso para o Frontend
