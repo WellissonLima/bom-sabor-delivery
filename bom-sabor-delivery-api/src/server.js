@@ -7,7 +7,11 @@ const productRoutes = require('./routes/productRoutes');
 const app = express();
 
 // --- 1. MIDDLEWARES (DEVEM VIR ANTES DAS ROTAS) ---
-app.use(cors()); // Libera o acesso para o Frontend
+app.use(cors({
+    origin: ['http://localhost:5173', 'https://bom-sabor-online.vercel.app'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+})); // Libera o acesso para o Frontend
 app.use(express.json()); // Permite ler JSON no corpo da requisição (ESSENCIAL)
 app.use(express.urlencoded({ extended: true }));
 
